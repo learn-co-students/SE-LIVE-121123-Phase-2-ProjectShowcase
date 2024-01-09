@@ -113,7 +113,9 @@ Calling the setter function does two things:
 
 ### Resources
 
-- [React Docs - Events](https://reactjs.org/docs/events.html)
-- [React Docs - Hooks](https://reactjs.org/docs/hooks-overview.html)
-- [React Docs - Functional State Updates](https://reactjs.org/docs/hooks-reference.html#functional-updates)
+- [React Docs - Events](https://react.dev/learn/adding-interactivity)
+- [React Docs - Hooks](https://react.dev/reference/react/hooks)
+- [React Docs - useState](https://react.dev/reference/react/useState)
 - [React Docs - Stale State Problem](https://reactjs.org/docs/hooks-faq.html#why-am-i-seeing-stale-props-or-state-inside-my-function)
+- [React Docs - Old Values After State Update](https://react.dev/reference/react/useState#ive-updated-the-state-but-logging-gives-me-the-old-value)
+- [React Docs - Stale Props or State Problem](https://legacy.reactjs.org/docs/hooks-faq.html#why-am-i-seeing-stale-props-or-state-inside-my-function)
