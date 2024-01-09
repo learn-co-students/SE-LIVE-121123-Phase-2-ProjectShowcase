@@ -14,22 +14,23 @@ title: "P2L2 - React State and Events slides"
 
 <h2><strong> ✅ Objectives </strong></h2>
 
-- Explain the importance of state
-- Explain the difference between state and props
-- Observe how to use the useState hook
-- Observe how to use DOM events in React
+- Explain the importance of state {.fragment}
+- Explain the difference between state and props {.fragment}
+- Observe how to use the useState hook {.fragment}
+- Observe how to use DOM events in React {.fragment}
 
 ---
 
 <h3 style="text-align: center;"><strong>Why is state important?</strong></h3>
 <div style="font-size: 0.7em">
-🏹 State is used to track information that changes over time. 
 
-🏹 Props are passed from the parent component, state is internal to a component. 
+🏹 State is used to track information that changes over time. {.fragment}
 
-🏹 Values stored in state are meant to change, especially in response to user behaviors (as the user interacts with the DOM and triggers events).
+🏹 Props are passed from the parent component, state is internal to a component. {.fragment}
 
-🏹 We can do conditional rendering based on state values. This is a key component of declarative programming in React: we tie our components to our state by integrating state values into our JSX rendering logic. This way, changes in state eventually cause changes to the DOM (Updating the Dark Mode button!).
+🏹 Values stored in state are meant to change, especially in response to user behaviors (as the user interacts with the DOM and triggers events). {.fragment}
+
+🏹 We can do conditional rendering based on state values. This is a key component of declarative programming in React: we tie our components to our state by integrating state values into our JSX rendering logic. This way, changes in state eventually cause changes to the DOM (Updating the Dark Mode button!). {.fragment}
 </div>
 
 
@@ -71,7 +72,7 @@ const Counter = () => {
 };
 ```
 
-**NOTE:** Events can only be attached to DOM elements, we can't attach event listeners directly to our components
+**NOTE:** Events can only be attached to DOM elements, we can't attach event listeners directly to our components {.fragment}
 
 ---
 
@@ -89,7 +90,7 @@ const Counter = () => {
 };
 ```
 
-This is helpful in the case where we need to introduce additional event handling logic. We can do so without cluttering our JSX.
+This is helpful in the case where we need to introduce additional event handling logic. We can do so without cluttering our JSX. {.fragment}
 
 ---
 
@@ -102,14 +103,17 @@ Inside the `Header` component, there is a button with textContent of `Light Mode
 ```js
 <button>Light Mode</button>
 ```
+::: {.fragment}
 
-Attach an `onClick` event to the button:
+Attach an `onClick` event to the button: 
 
 ```js
 <button onClick={() => console.log("clicked")}>Light Mode</button>
 ```
 
-We can also also refactor using a helper function:
+::: {.fragment}
+
+We can also also refactor using a helper function: 
 
 ```js
 const handleClick = () => console.log('clicked')
@@ -117,7 +121,9 @@ const handleClick = () => console.log('clicked')
 <button onClick={handeClick}>Light Mode</button>
 ```
 
-💡 We need to now figure out how to properly set new text for the button and perform DOM manipulation to reflect the change. That is where `state` will come in.
+::: {.fragment}
+
+💡 We need to now figure out how to properly set new text for the button and perform DOM manipulation to reflect the change. That is where `state` will come in. 
 
 </div>
 
@@ -158,6 +164,8 @@ const projectListItems = projects.map(project => {
 })
 ```
 
+::: {.fragment}
+
 We need to make this dynamic by implementing a filter feature that returns the projects based on the user's entry in the `search input`
 
 ```js
@@ -173,17 +181,23 @@ We need to make this dynamic by implementing a filter feature that returns the p
 
 <div style="font-size: 0.9em">
 
+::: {.fragment}
+
 1. Initialize state to track the `searchQuery`:
 
 ```js
 const [searchQuery, setSearchQuery] = useState("");
 ```
 
+::: {.fragment}
+
 2. Add on `onChange` event to the input element:
 
 ```js
 <input onChange={handleSearch} type="text" placeholder="Search..." />
 ```
+
+::: {.fragment}
 
 3. Update the state in the `handleSearch` helper function:
 
@@ -200,6 +214,8 @@ const handleSearch = (e) => setSearchQuery(e.target.value);
 
 <div style="font-size: 0.9em">
 
+::: {.fragment}
+
 4. Filter the `projects` array to return the search results based on the `searchQuery` value:
 
 ```js
@@ -208,6 +224,8 @@ const searchResults = projects.filter((project) =>
 );
 ```
 
+::: {.fragment}
+
 5. Map over `searchResults` instead of `projects` when creating `projectListItems`:
 
 ```js
@@ -215,6 +233,8 @@ const projectListItems = searchResults.map(project => {
   return <ProjectListItem key={project.id} project={project} />
 })
 ```
+
+::: {.fragment}
 
 <strong>Note:</strong> If the searchQuery is an empty string, the `filter()` will return all the project items
 
@@ -229,12 +249,14 @@ const projectListItems = searchResults.map(project => {
 
 Events and state are both important and can work together to allow the DOM to reflect a users interactions and activities by:
 
-1. Attaching events to parts of our JSX
+1. Attaching events to parts of our JSX {.fragment}
 
-2. Updating the state based on the goal of the event
+2. Updating the state based on the goal of the event {.fragment}
 
-3. State change forces a re-render that will cause DOM manipulation and reflect the changes on the interface
+3. State change forces a re-render that will cause DOM manipulation and reflect the changes on the interface {.fragment}
 
-<h4 style="text-align: center;"><strong> user behavior -> update state -> React updates DOM </strong></h4>
+::: {.fragment}
+
+<h4 style="text-align: center;"><strong> user behavior -> updates state -> React updates DOM </strong></h4>
 
 </div>

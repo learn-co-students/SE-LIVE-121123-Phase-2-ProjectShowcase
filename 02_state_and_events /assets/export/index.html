@@ -51,7 +51,7 @@
 
    <!-- css list -->
 	
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
   
 
    
@@ -86,10 +86,10 @@
             
             <h2><strong> ✅ Objectives </strong></h2>
 <ul>
-<li>Explain the importance of state</li>
-<li>Explain the difference between state and props</li>
-<li>Observe how to use the useState hook</li>
-<li>Observe how to use DOM events in React</li>
+<li class="fragment">Explain the importance of state</li>
+<li class="fragment">Explain the difference between state and props</li>
+<li class="fragment">Observe how to use the useState hook</li>
+<li class="fragment">Observe how to use DOM events in React</li>
 </ul>
 
             </section>
@@ -102,10 +102,10 @@
             
             <h3 style="text-align: center;"><strong>Why is state important?</strong></h3>
 <div style="font-size: 0.7em">
-🏹 State is used to track information that changes over time. 
-<p>🏹 Props are passed from the parent component, state is internal to a component.</p>
-<p>🏹 Values stored in state are meant to change, especially in response to user behaviors (as the user interacts with the DOM and triggers events).</p>
-<p>🏹 We can do conditional rendering based on state values. This is a key component of declarative programming in React: we tie our components to our state by integrating state values into our JSX rendering logic. This way, changes in state eventually cause changes to the DOM (Updating the Dark Mode button!).</p>
+<p class="fragment">🏹 State is used to track information that changes over time.</p>
+<p class="fragment">🏹 Props are passed from the parent component, state is internal to a component.</p>
+<p class="fragment">🏹 Values stored in state are meant to change, especially in response to user behaviors (as the user interacts with the DOM and triggers events).</p>
+<p class="fragment">🏹 We can do conditional rendering based on state values. This is a key component of declarative programming in React: we tie our components to our state by integrating state values into our JSX rendering logic. This way, changes in state eventually cause changes to the DOM (Updating the Dark Mode button!).</p>
 </div>
             </section>
     
@@ -153,7 +153,7 @@
   );
 };
 </code></pre>
-<p><strong>NOTE:</strong> Events can only be attached to DOM elements, we can’t attach event listeners directly to our components</p>
+<p class="fragment"><strong>NOTE:</strong> Events can only be attached to DOM elements, we can’t attach event listeners directly to our components</p>
 
             </section>
     
@@ -173,7 +173,7 @@
   return &lt;button onClick={handleClick}&gt;Click Me&lt;/button&gt;;
 };
 </code></pre>
-<p>This is helpful in the case where we need to introduce additional event handling logic. We can do so without cluttering our JSX.</p>
+<p class="fragment">This is helpful in the case where we need to introduce additional event handling logic. We can do so without cluttering our JSX.</p>
 
             </section>
     
@@ -188,16 +188,22 @@
 <p>Inside the <code>Header</code> component, there is a button with textContent of <code>Light Mode</code></p>
 <pre><code class="language-js">&lt;button&gt;Light Mode&lt;/button&gt;
 </code></pre>
+<div class="fragment ">
 <p>Attach an <code>onClick</code> event to the button:</p>
 <pre><code class="language-js">&lt;button onClick={() =&gt; console.log(&quot;clicked&quot;)}&gt;Light Mode&lt;/button&gt;
 </code></pre>
+<div class="fragment ">
 <p>We can also also refactor using a helper function:</p>
 <pre><code class="language-js">const handleClick = () =&gt; console.log('clicked')
 
 &lt;button onClick={handeClick}&gt;Light Mode&lt;/button&gt;
 </code></pre>
+<div class="fragment ">
 <p>💡 We need to now figure out how to properly set new text for the button and perform DOM manipulation to reflect the change. That is where <code>state</code> will come in.</p>
+</div></div>
 </div>
+</div>
+
             </section>
     
 
@@ -256,10 +262,12 @@
   return &lt;ProjectListItem key={project.id} project={project} /&gt;
 })
 </code></pre>
+<div class="fragment ">
 <p>We need to make this dynamic by implementing a filter feature that returns the projects based on the user’s entry in the <code>search input</code></p>
 <pre><code class="language-js">&lt;input type=&quot;text&quot; placeholder=&quot;Search...&quot; /&gt;
 </code></pre>
-</div>
+</div></div>
+
             </section>
     
 
@@ -270,22 +278,28 @@
             
             <h4>Filter by project name in ProjectList component steps:</h4>
 <div style="font-size: 0.9em">
+<div class="fragment ">
 <ol>
 <li>Initialize state to track the <code>searchQuery</code>:</li>
 </ol>
 <pre><code class="language-js">const [searchQuery, setSearchQuery] = useState(&quot;&quot;);
 </code></pre>
+<div class="fragment ">
 <ol start="2">
 <li>Add on <code>onChange</code> event to the input element:</li>
 </ol>
 <pre><code class="language-js">&lt;input onChange={handleSearch} type=&quot;text&quot; placeholder=&quot;Search...&quot; /&gt;
 </code></pre>
+<div class="fragment ">
 <ol start="3">
 <li>Update the state in the <code>handleSearch</code> helper function:</li>
 </ol>
 <pre><code class="language-js">const handleSearch = (e) =&gt; setSearchQuery(e.target.value);
 </code></pre>
+</div></div>
 </div>
+</div>
+
             </section>
     
 
@@ -296,6 +310,7 @@
             
             <h4>Filter by project name in ProjectList component steps contd:</h4>
 <div style="font-size: 0.9em">
+<div class="fragment ">
 <ol start="4">
 <li>Filter the <code>projects</code> array to return the search results based on the <code>searchQuery</code> value:</li>
 </ol>
@@ -303,6 +318,7 @@
   project.name.toLowerCase().includes(searchQuery.toLowerCase())
 );
 </code></pre>
+<div class="fragment ">
 <ol start="5">
 <li>Map over <code>searchResults</code> instead of <code>projects</code> when creating <code>projectListItems</code>:</li>
 </ol>
@@ -310,8 +326,12 @@
   return &lt;ProjectListItem key={project.id} project={project} /&gt;
 })
 </code></pre>
+<div class="fragment ">
 <p><strong>Note:</strong> If the searchQuery is an empty string, the <code>filter()</code> will return all the project items</p>
+</div></div>
 </div>
+</div>
+
             </section>
     
 
@@ -324,18 +344,20 @@
 <div style="font-size: 0.9em">
 <p>Events and state are both important and can work together to allow the DOM to reflect a users interactions and activities by:</p>
 <ol>
-<li>
+<li class="fragment">
 <p>Attaching events to parts of our JSX</p>
 </li>
-<li>
+<li class="fragment">
 <p>Updating the state based on the goal of the event</p>
 </li>
-<li>
+<li class="fragment">
 <p>State change forces a re-render that will cause DOM manipulation and reflect the changes on the interface</p>
 </li>
 </ol>
-<h4 style="text-align: center;"><strong> user behavior -> update state -> React updates DOM </strong></h4>
-</div>
+<div class="fragment ">
+<h4 style="text-align: center;"><strong> user behavior -> updates state -> React updates DOM </strong></h4>
+</div></div>
+
             </section>
     
 
