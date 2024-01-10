@@ -10,25 +10,27 @@ title: "P2L3 - React Information Flow"
 
 <img src="https://res.cloudinary.com/dlzuobe8h/image/upload/v1663777860/phase2/logo_rato6n.png">
 
+::: {style="font-size: 0.6em}
+
 https://labs.tadigital.com/index.php/2020/03/31/unidirectional-data-flow-in-react/
 
 ---
 
 ### ✅ Objectives 
 
-- Define the term “lifting state”
-- Recognize the pattern for changing state in a parent component from a child component
-- Explain the role that callback functions play in changing parent state
-- Observe how we can render reusable components that invoke different callback functions after an event
-- Recognize destructured props and how to work with them
+- Define the term “lifting state” {.fragment}
+- Recognize the pattern for changing state in a parent component from a child component {.fragment}
+- Explain the role that callback functions play in changing parent state {.fragment}
+- Observe how we can render reusable components that invoke different callback functions after an event {.fragment}
+- Recognize destructured props and how to work with them {.fragment}
 
 ---
 
 ### Lifting State Up ⬆️ 
 
-"In React, sharing state is accomplished by moving it up to the closest common ancestor of the components that need it. This is called <strong>“lifting state up”.</strong>"
+<quote>"Sometimes, you want the state of two components to always change together. To do it, remove state from both of them, move it to their closest common parent, and then pass it down to them via props. This is known as <strong>lifting state up</strong>, and it’s one of the most common things you will do writing React code."</quote>
 
-https://reactjs.org/docs/lifting-state-up.html
+https://react.dev/learn/sharing-state-between-components
 
 ---
 
@@ -36,13 +38,13 @@ https://reactjs.org/docs/lifting-state-up.html
 
 <div style="font-size: 0.8em">
 
-From [Step 4 of Thinking in React](https://reactwithhooks.netlify.app/docs/thinking-in-react.html#step-4-identify-where-your-state-should-live): To decide where state should live, for each piece of state in your application:
+From [Step 4 of Thinking in React](https://react.dev/learn/thinking-in-react): To decide where state should live, for each piece of state in your application:
 
 
-- Identify every component that renders something based on that state.
-- Find a common owner component (a single component above all the components that need the state in the hierarchy).
-- Either the common owner or another component higher up in the hierarchy should own the state.
-- If you can’t find a component where it makes sense to own the state, create a new component solely for holding the state and add it somewhere in the hierarchy above the common owner component.
+- Identify every component that renders something based on that state. {.fragment}
+- Find a common owner component (a single component above all the components that need the state in the hierarchy). {.fragment}
+- Either the common owner or another component higher up in the hierarchy should own the state. {.fragment}
+- If you can’t find a component where it makes sense to own the state, create a new component solely for holding the state and add it somewhere in the hierarchy above the common owner component. {.fragment}
 
 </div>
 
@@ -57,11 +59,11 @@ From [Step 4 of Thinking in React](https://reactwithhooks.netlify.app/docs/think
 </div>
 <div style="width: 40%; font-size: 0.6em; text-align: left; display: flex; flex-direction: column; justify-content: center;">
 
-💡 Question 1: Do you see a problem with storing `isDarkMode` in state within the `Header` component?
+💡 Question 1: Do you see a problem with storing `isDarkMode` in state within the `Header` component? {.fragment}
 
-💡 Question 2: How about storing `projects` in state within the `ProjectList` component?
+💡 Question 2: How about storing `projects` in state within the `ProjectList` component? {.fragment}
 
-💡 Question 3: How about storing `searchQuery` in state within the `ProjectList` component?
+💡 Question 3: How about storing `searchQuery` in state within the `ProjectList` component? {.fragment}
 
 </div>
 </div>
@@ -129,11 +131,15 @@ const App = () => {
 ...
 ```
 
+::: {.fragment}
+
 <small>Second, create the `onToggleDarkMode` function that will update the `isDarkMode` state:</small>
 
 ```js
 const onToggleDarkMode = () => setIsDarkMode(isDarkMode => !isDarkMode);
 ```
+
+::: {.fragment}
 
 <small>Third, pass both `isDarkMode` and `onToggleDarkMode` to `Header` as props</small>
 
@@ -172,7 +178,9 @@ export default Header;
 
 #### Lifting Projects in State
 
-<small>We need to modify `projects` from `ProjectForm` as well as access it from `ProjectList` so it needs to live in a common parent, in this case, we'll move it to our new `ProjectsContainer` component:</small>
+<small>❓ What's the problem with the current location of the `projects` state?</small>
+
+<small class="fragment">We need to modify `projects` from `ProjectForm` as well as access it from `ProjectList` so it needs to live in a common parent, in this case, we'll move it to our new `ProjectsContainer` component:</small>
 
 ```js
 // this needs to move up
