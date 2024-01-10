@@ -1,10 +1,8 @@
-import React, { useState } from "react";
 
-const Header = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+const Header = ({isDarkMode, onToggleDarkMode}) => {
   
   const handleToggleDarkMode = () => {
-    setIsDarkMode(isDarkMode => !isDarkMode)
+    onToggleDarkMode() // in this case could put the callback directly into the event listener
   }
 
   return (

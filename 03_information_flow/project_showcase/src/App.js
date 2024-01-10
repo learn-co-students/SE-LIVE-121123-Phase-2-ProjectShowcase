@@ -1,15 +1,24 @@
+import React, { useState } from "react";
 
 import Header from "./components/Header";
-import ProjectForm from "./components/ProjectForm";
-import ProjectList from "./components/ProjectList";
+import ProjectContainer from "./components/ProjectContainer";
 
 const App = () => {
+  const [isDarkMode, setIsDarkMode] = useState(true); // lifted up from Header
+
+  function toggleDarkMode(){
+    setIsDarkMode(isDarkMode => !isDarkMode) // also lifted up from Header
+  }
+
+  const appClass = isDarkMode ? "App" : "App light"
 
   return (
-    <div className="App">
-      <Header />
-      <ProjectForm />
-      <ProjectList />
+    <div className={appClass}>
+      <Header 
+        isDarkMode={isDarkMode} // pass down this state to conditionally render button text
+        onToggleDarkMode={toggleDarkMode} // pass down to click handler function
+      />
+      <ProjectContainer />
     </div>
   );
 };
