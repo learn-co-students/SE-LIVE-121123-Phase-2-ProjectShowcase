@@ -51,7 +51,7 @@
 
    <!-- css list -->
 	
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
   
 
    
@@ -75,7 +75,9 @@
             
             <h2>React Information Flow</h2>
 <img src="https://res.cloudinary.com/dlzuobe8h/image/upload/v1663777860/phase2/logo_rato6n.png">
+<div style="font-size: 0.6em" class="">
 <p><a href="https://labs.tadigital.com/index.php/2020/03/31/unidirectional-data-flow-in-react/">https://labs.tadigital.com/index.php/2020/03/31/unidirectional-data-flow-in-react/</a></p>
+</div>
 
             </section>
     
@@ -87,11 +89,11 @@
             
             <h3>✅ Objectives</h3>
 <ul>
-<li>Define the term “lifting state”</li>
-<li>Recognize the pattern for changing state in a parent component from a child component</li>
-<li>Explain the role that callback functions play in changing parent state</li>
-<li>Observe how we can render reusable components that invoke different callback functions after an event</li>
-<li>Recognize destructured props and how to work with them</li>
+<li class="fragment">Define the term “lifting state”</li>
+<li class="fragment">Recognize the pattern for changing state in a parent component from a child component</li>
+<li class="fragment">Explain the role that callback functions play in changing parent state</li>
+<li class="fragment">Observe how we can render reusable components that invoke different callback functions after an event</li>
+<li class="fragment">Recognize destructured props and how to work with them</li>
 </ul>
 
             </section>
@@ -103,8 +105,8 @@
         <section >
             
             <h3>Lifting State Up ⬆️</h3>
-<p>“In React, sharing state is accomplished by moving it up to the closest common ancestor of the components that need it. This is called <strong>“lifting state up”.</strong>”</p>
-<p><a href="https://reactjs.org/docs/lifting-state-up.html">https://reactjs.org/docs/lifting-state-up.html</a></p>
+<p><quote>“Sometimes, you want the state of two components to always change together. To do it, remove state from both of them, move it to their closest common parent, and then pass it down to them via props. This is known as <strong>lifting state up</strong>, and it’s one of the most common things you will do writing React code.”</quote></p>
+<p><a href="https://react.dev/learn/sharing-state-between-components">https://react.dev/learn/sharing-state-between-components</a></p>
 
             </section>
     
@@ -116,12 +118,12 @@
             
             <h4>🤔 Decisions - Where should state be?</h4>
 <div style="font-size: 0.8em">
-<p>From <a href="https://reactwithhooks.netlify.app/docs/thinking-in-react.html#step-4-identify-where-your-state-should-live">Step 4 of Thinking in React</a>: To decide where state should live, for each piece of state in your application:</p>
+<p>From <a href="https://react.dev/learn/thinking-in-react">Step 4 of Thinking in React</a>: To decide where state should live, for each piece of state in your application:</p>
 <ul>
-<li>Identify every component that renders something based on that state.</li>
-<li>Find a common owner component (a single component above all the components that need the state in the hierarchy).</li>
-<li>Either the common owner or another component higher up in the hierarchy should own the state.</li>
-<li>If you can’t find a component where it makes sense to own the state, create a new component solely for holding the state and add it somewhere in the hierarchy above the common owner component.</li>
+<li class="fragment">Identify every component that renders something based on that state.</li>
+<li class="fragment">Find a common owner component (a single component above all the components that need the state in the hierarchy).</li>
+<li class="fragment">Either the common owner or another component higher up in the hierarchy should own the state.</li>
+<li class="fragment">If you can’t find a component where it makes sense to own the state, create a new component solely for holding the state and add it somewhere in the hierarchy above the common owner component.</li>
 </ul>
 </div>
             </section>
@@ -138,9 +140,9 @@
 <center><img src="./component-hierarchy-with-data-flow.drawio.svg" alt="Component Hierarchy" style="height: 70vh" width="1500"></center>
 </div>
 <div style="width: 40%; font-size: 0.6em; text-align: left; display: flex; flex-direction: column; justify-content: center;">
-<p>💡 Question 1: Do you see a problem with storing <code>isDarkMode</code> in state within the <code>Header</code> component?</p>
-<p>💡 Question 2: How about storing <code>projects</code> in state within the <code>ProjectList</code> component?</p>
-<p>💡 Question 3: How about storing <code>searchQuery</code> in state within the <code>ProjectList</code> component?</p>
+<p class="fragment">💡 Question 1: Do you see a problem with storing <code>isDarkMode</code> in state within the <code>Header</code> component?</p>
+<p class="fragment">💡 Question 2: How about storing <code>projects</code> in state within the <code>ProjectList</code> component?</p>
+<p class="fragment">💡 Question 3: How about storing <code>searchQuery</code> in state within the <code>ProjectList</code> component?</p>
 </div>
 </div>
             </section>
@@ -227,12 +229,16 @@
 
 ...
 </code></pre>
+<div class="fragment ">
 <p><small>Second, create the <code>onToggleDarkMode</code> function that will update the <code>isDarkMode</code> state:</small></p>
 <pre><code class="language-js">const onToggleDarkMode = () =&gt; setIsDarkMode(isDarkMode =&gt; !isDarkMode);
 </code></pre>
+<div class="fragment ">
 <p><small>Third, pass both <code>isDarkMode</code> and <code>onToggleDarkMode</code> to <code>Header</code> as props</small></p>
 <pre><code class="language-js">&lt;Header isDarkMode={isDarkMode} onToggleDarkMode={onToggleDarkMode} /&gt;
 </code></pre>
+</div>
+</div>
 
             </section>
     
@@ -272,7 +278,8 @@ export default Header;
         <section >
             
             <h4>Lifting Projects in State</h4>
-<p><small>We need to modify <code>projects</code> from <code>ProjectForm</code> as well as access it from <code>ProjectList</code> so it needs to live in a common parent, in this case, we’ll move it to our new <code>ProjectsContainer</code> component:</small></p>
+<p><small>❓ What’s the problem with the current location of the <code>projects</code> state?</small></p>
+<p><small class="fragment">We need to modify <code>projects</code> from <code>ProjectForm</code> as well as access it from <code>ProjectList</code> so it needs to live in a common parent, in this case, we’ll move it to our new <code>ProjectsContainer</code> component:</small></p>
 <pre><code class="language-js">// this needs to move up
 const [projects, setProjects] = useState([]);
 // as does the function that updates this piece of state
