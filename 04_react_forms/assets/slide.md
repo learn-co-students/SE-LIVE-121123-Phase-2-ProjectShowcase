@@ -13,10 +13,10 @@ title: "P2L4 - React Forms slides"
 
 ## ✅ Objectives 
 
-- Explain the difference between a controlled and uncontrolled input
-- Explain why controlled inputs are preferred by the React community
-- Review how to use callback functions with events in React
-- Review how to change parent state from a child component
+- Explain the difference between a controlled and uncontrolled input {.fragment}
+- Explain why controlled inputs are preferred by the React community {.fragment}
+- Review how to use callback functions with events in React {.fragment}
+- Review how to change parent state from a child component {.fragment}
 
 ---
 
@@ -34,11 +34,11 @@ title: "P2L4 - React Forms slides"
 
 To keep track of each input's value, you need:
 
-1. State for the input that will manage the input's value
+1. <strong>State</strong> for the input that will manage the input's value {.fragment}
 
-2. A `value` attribute on the input that corresponds to that piece of state
+2. A <strong>`value`</strong> attribute on the input that corresponds to that piece of state {.fragment}
 
-3. An `onChange` listener attached to the input to monitor users behavior and update state as the user interacts with the field
+3. An <strong>`onChange`</strong> listener attached to the input to monitor users behavior and update state as the user interacts with the field {.fragment}
 
 </small>
 
@@ -61,10 +61,10 @@ Form components also need an `onSubmit` listener on the form element to handle t
 
 <div style="font-size: 0.8em">
 
-- When setState is called, React will re-render that component and all of its children
-- This is an expensive operation, so React optimizes by running a diffing algorithm to decide which components actually need to trigger committed changes to the DOM.
-- This diffing process is called [reconciliation](https://reactwithhooks.netlify.app/docs/reconciliation.html)
-- During reconciliation, React compares its own picture of the current state of the DOM tree with what it should look like after the change. Using this diff, the minimal DOM manipulation necessary is committed to reconcile the current DOM tree with what it should be after the change to state.
+- When setState is called, React will re-render that component and all of its children {.fragment}
+- This is an expensive operation, so React optimizes by running a diffing algorithm to decide which components actually need to trigger committed changes to the DOM. {.fragment}
+- This diffing process is called [reconciliation](https://reactwithhooks.netlify.app/docs/reconciliation.html) {.fragment}
+- During reconciliation, React compares its own picture of the current state of the DOM tree with what it should look like after the change. Using this diff, the minimal DOM manipulation necessary is committed to reconcile the current DOM tree with what it should be after the change to state. {.fragment}
 
 </div>
 
@@ -162,6 +162,8 @@ Example:
 />
 ```
 
+::: {.fragment}
+
 <small>🤯 If using individual pieces of state for form fields, a separate helper function will be created for each corresponding field.</small>
 
 Example:
@@ -249,6 +251,12 @@ The state of `projects` is defined inside of the parent component `App` and the 
 
 ---
 
+#### Component Tree with Data Flow
+
+<center><img src="./component-hierarchy-with-updated-data-flow.drawio.svg" alt="Component Hierarchy" style="height: 85vh" width="2000"></center>
+
+---
+
 <div style="font-size: 0.8em">
 Here is where the process of inverse data flow will need to occur:
 
@@ -257,7 +265,7 @@ Here is where the process of inverse data flow will need to occur:
 </div>
 
 ```js
-const onAddProject = (newProject) => {
+const addProject = (newProject) => {
   setProjects(projects => [...projects, newProject]);
 };
 ```
@@ -266,7 +274,7 @@ And in the JSX:
 </div>
 
 ```jsx
-<ProjectForm onAddProject={onAddProject} />
+<ProjectForm onAddProject={addProject} />
 ```
 
 ---
@@ -296,13 +304,22 @@ const handleSubmit = (e) => {
 
 ---
 
+<iframe src="https://codesandbox.io/embed/inverse-data-flow-diagram-mtvrs6?fontsize=14&hidenavigation=1&theme=dark&view=preview"
+  style="width:100%; height:650px; border:0; border-radius: 4px; overflow:hidden;"
+  title="inverse-data-flow-diagram"
+  allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+  sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
+
+---
+
 ### 💡 Conclusion
 
 <div style="font-size: 0.8em">
 
-- State is a very integral part of the way that React applications render and manipulate the DOM. 
-- React prefers using state to update the forms and keep track of the form fields values, making them controlled inputs, rather than letting form inputs manage their own internal state (through their value). 
-- What our user sees in the input fields reflects the value of the state associated with that field. 
-- Example: Doing this allows us to make an edit form populated with a project's previously saved values for the inputs by setting the formState to match the saved record.
+- State is a very integral part of the way that React applications render and manipulate the DOM. {.fragment}
+- React prefers using state to update the forms and keep track of the form fields values, making them controlled inputs, rather than letting form inputs manage their own internal state (through their value). {.fragment}
+- What our user sees in the input fields reflects the value of the state associated with that field. {.fragment}
+- Example: Doing this allows us to make an edit form populated with a project's previously saved values for the inputs by setting the formState to match the saved record. {.fragment}
 
 </div>
