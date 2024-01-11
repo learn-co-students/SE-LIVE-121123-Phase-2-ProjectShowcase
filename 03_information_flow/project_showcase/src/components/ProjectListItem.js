@@ -1,13 +1,6 @@
 import { useState } from "react";
 
-const ProjectListItem = ({
-  image,
-  name,
-  about,
-  link,
-  phase
-}) => {
-
+const ProjectListItem = ({ image, name, about, link, phase }) => {
   const [clapCount, setClapCount] = useState(0);
 
   const handleClap = () => setClapCount(clapCount + 1);
@@ -24,7 +17,7 @@ const ProjectListItem = ({
       <section className="details">
         <h4>{name}</h4>
         <p>{about}</p>
-        {link ? (
+        {link ? ( // conditional rendering; only render a link if there is a link
           <p>
             <a href={link}>Link</a>
           </p>
@@ -36,6 +29,6 @@ const ProjectListItem = ({
       </footer>
     </li>
   );
-}
+};
 
 export default ProjectListItem;
