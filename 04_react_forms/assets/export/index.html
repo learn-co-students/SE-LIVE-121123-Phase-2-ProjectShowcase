@@ -51,7 +51,7 @@
 
    <!-- css list -->
 	
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
   
 
    
@@ -85,10 +85,10 @@
             
             <h2>✅ Objectives</h2>
 <ul>
-<li>Explain the difference between a controlled and uncontrolled input</li>
-<li>Explain why controlled inputs are preferred by the React community</li>
-<li>Review how to use callback functions with events in React</li>
-<li>Review how to change parent state from a child component</li>
+<li class="fragment">Explain the difference between a controlled and uncontrolled input</li>
+<li class="fragment">Explain why controlled inputs are preferred by the React community</li>
+<li class="fragment">Review how to use callback functions with events in React</li>
+<li class="fragment">Review how to change parent state from a child component</li>
 </ul>
 
             </section>
@@ -114,14 +114,14 @@
 <small>
 <p>To keep track of each input’s value, you need:</p>
 <ol>
-<li>
-<p>State for the input that will manage the input’s value</p>
+<li class="fragment">
+<p><strong>State</strong> for the input that will manage the input’s value</p>
 </li>
-<li>
-<p>A <code>value</code> attribute on the input that corresponds to that piece of state</p>
+<li class="fragment">
+<p>A <strong><code>value</code></strong> attribute on the input that corresponds to that piece of state</p>
 </li>
-<li>
-<p>An <code>onChange</code> listener attached to the input to monitor users behavior and update state as the user interacts with the field</p>
+<li class="fragment">
+<p>An <strong><code>onChange</code></strong> listener attached to the input to monitor users behavior and update state as the user interacts with the field</p>
 </li>
 </ol>
 </small>
@@ -153,10 +153,10 @@
             <h3>🤗 Reconciliation 🤗</h3>
 <div style="font-size: 0.8em">
 <ul>
-<li>When setState is called, React will re-render that component and all of its children</li>
-<li>This is an expensive operation, so React optimizes by running a diffing algorithm to decide which components actually need to trigger committed changes to the DOM.</li>
-<li>This diffing process is called <a href="https://reactwithhooks.netlify.app/docs/reconciliation.html">reconciliation</a></li>
-<li>During reconciliation, React compares its own picture of the current state of the DOM tree with what it should look like after the change. Using this diff, the minimal DOM manipulation necessary is committed to reconcile the current DOM tree with what it should be after the change to state.</li>
+<li class="fragment">When setState is called, React will re-render that component and all of its children</li>
+<li class="fragment">This is an expensive operation, so React optimizes by running a diffing algorithm to decide which components actually need to trigger committed changes to the DOM.</li>
+<li class="fragment">This diffing process is called <a href="https://reactwithhooks.netlify.app/docs/reconciliation.html">reconciliation</a></li>
+<li class="fragment">During reconciliation, React compares its own picture of the current state of the DOM tree with what it should look like after the change. Using this diff, the minimal DOM manipulation necessary is committed to reconcile the current DOM tree with what it should be after the change to state.</li>
 </ul>
 </div>
             </section>
@@ -254,12 +254,14 @@ Example:</p>
   onChange={handleOnChange} 
 /&gt;
 </code></pre>
+<div class="fragment ">
 <p><small>🤯 If using individual pieces of state for form fields, a separate helper function will be created for each corresponding field.</small></p>
 <p>Example:</p>
 <pre><code class="language-js">&lt;input type=&quot;text&quot; id=&quot;about&quot; onChange={handleAboutChange} /&gt;
 </code></pre>
 <pre><code class="language-js">&lt;input type=&quot;text&quot; id=&quot;phase&quot; onChange={handlePhaseChange} /&gt;
 </code></pre>
+</div>
 
             </section>
     
@@ -356,20 +358,30 @@ Example:</p>
     
         <section >
             
+            <h4>Component Tree with Data Flow</h4>
+<center><img src="./component-hierarchy-with-updated-data-flow.drawio.svg" alt="Component Hierarchy" style="height: 85vh" width="2000"></center>
+            </section>
+    
+
+
+
+    
+        <section >
+            
             <div style="font-size: 0.8em">
 Here is where the process of inverse data flow will need to occur:
 <ol>
 <li>Create a helper function in <code>App</code> component called <code>onAddProject</code> that will update the <code>projects</code> state:</li>
 </ol>
 </div>
-<pre><code class="language-js">const onAddProject = (newProject) =&gt; {
+<pre><code class="language-js">const addProject = (newProject) =&gt; {
   setProjects(projects =&gt; [...projects, newProject]);
 };
 </code></pre>
 <div style="font-size: 0.8em">
 And in the JSX:
 </div>
-<pre><code class="language-jsx">&lt;ProjectForm onAddProject={onAddProject} /&gt;
+<pre><code class="language-jsx">&lt;ProjectForm onAddProject={addProject} /&gt;
 </code></pre>
 
             </section>
@@ -408,13 +420,27 @@ And in the JSX:
     
         <section >
             
+            <iframe src="https://codesandbox.io/embed/inverse-data-flow-diagram-mtvrs6?fontsize=14&hidenavigation=1&theme=dark&view=preview"
+  style="width:100%; height:650px; border:0; border-radius: 4px; overflow:hidden;"
+  title="inverse-data-flow-diagram"
+  allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+  sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
+            </section>
+    
+
+
+
+    
+        <section >
+            
             <h3>💡 Conclusion</h3>
 <div style="font-size: 0.8em">
 <ul>
-<li>State is a very integral part of the way that React applications render and manipulate the DOM.</li>
-<li>React prefers using state to update the forms and keep track of the form fields values, making them controlled inputs, rather than letting form inputs manage their own internal state (through their value).</li>
-<li>What our user sees in the input fields reflects the value of the state associated with that field.</li>
-<li>Example: Doing this allows us to make an edit form populated with a project’s previously saved values for the inputs by setting the formState to match the saved record.</li>
+<li class="fragment">State is a very integral part of the way that React applications render and manipulate the DOM.</li>
+<li class="fragment">React prefers using state to update the forms and keep track of the form fields values, making them controlled inputs, rather than letting form inputs manage their own internal state (through their value).</li>
+<li class="fragment">What our user sees in the input fields reflects the value of the state associated with that field.</li>
+<li class="fragment">Example: Doing this allows us to make an edit form populated with a project’s previously saved values for the inputs by setting the formState to match the saved record.</li>
 </ul>
 </div>
             </section>
