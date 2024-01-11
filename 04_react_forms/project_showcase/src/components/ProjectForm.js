@@ -6,22 +6,26 @@ const initialState = {
   phase: "",
   link: "",
   image: "",
-}
+};
 
-const ProjectForm = ({onAddProject}) => {
-  const [formData, setformData] = useState(initialState);
+const ProjectForm = ({ onAddProject }) => {
+  const [formData, setFormData] = useState(initialState); // create state to put the form under React control
+  // const { name, about, phase, link, image} = formData // you could optionally destructure these values if you wanted
 
   function handleChange(e) {
-    // const {name, value} = e.target
-    setformData((formData) => {
-      return { ...formData, [e.target.name]: e.target.value };
+    // const {name, value} = e.target // more optional destructuring for your convenience
+    setFormData((formData) => {
+      return {
+        ...formData, // copies all the key/values in formData so we don't lose them
+        [e.target.name]: e.target.value, // uses the [computed value] of the name of the input to overwrite the correct value in formData
+      };
     });
   }
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault();
-    onAddProject(formData)
-    setformData(initialState)
+    onAddProject(formData); // send the user-entered data from state to ProjectsContainer
+    setFormData(initialState); // reset the form with empty fields
   }
 
   return (
@@ -34,8 +38,8 @@ const ProjectForm = ({onAddProject}) => {
           type="text"
           id="name"
           name="name"
-          value={formData.name}
-          onChange={handleChange}
+          value={formData.name} // connect this input to the related data in state
+          onChange={handleChange} // make this input able to update state
           required
         />
 
