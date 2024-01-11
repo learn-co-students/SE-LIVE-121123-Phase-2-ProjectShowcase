@@ -12,9 +12,13 @@ const ProjectsContainer = () => {
       .then((projectsData) => setProjects(projectsData));
   }
 
+  const addProject = (newProject) => {
+    setProjects([...projects, newProject]);
+  }
+
   return (
     <>
-      <ProjectForm />
+      <ProjectForm onAddProject={addProject}/>
       <ProjectList
         onLoadProjects={loadProjects}
         projects={projects}
