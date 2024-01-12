@@ -1,31 +1,31 @@
 import React, { useState } from "react";
 
-const initialFormState = {
+const initialState = {
   name: "",
   about: "",
   phase: "",
   link: "",
-  image: ""
-}
+  image: "",
+};
+
 const ProjectForm = ({ onAddProject }) => {
-  const [formData, setFormData] = useState(initialFormState)
+  const [formData, setFormData] = useState(initialState); 
+  // const { name, about, phase, link, image} = formData 
 
-  const handleOnChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormData(formData => {
+  function handleChange(e) {
+    // const {name, value} = e.target 
+    setFormData((formData) => {
       return {
-        ...formData,
-        [name]: value
-      }
-    })
+        ...formData, 
+        [e.target.name]: e.target.value, 
+      };
+    });
   }
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
-    console.log(formData);
-    onAddProject(formData);
-    setFormData(initialFormState);
+    onAddProject(formData); 
+    setFormData(initialState); 
   }
 
   return (
@@ -38,8 +38,9 @@ const ProjectForm = ({ onAddProject }) => {
           type="text"
           id="name"
           name="name"
-          value={formData.name}
-          onChange={handleOnChange}
+          value={formData.name} 
+          onChange={handleChange} 
+          required
         />
 
         <label htmlFor="about">About</label>
@@ -47,7 +48,7 @@ const ProjectForm = ({ onAddProject }) => {
           id="about"
           name="about"
           value={formData.about}
-          onChange={handleOnChange}
+          onChange={handleChange}
         />
 
         <label htmlFor="phase">Phase</label>
@@ -55,7 +56,7 @@ const ProjectForm = ({ onAddProject }) => {
           name="phase"
           id="phase"
           value={formData.phase}
-          onChange={handleOnChange}
+          onChange={handleChange}
         >
           <option>Select One</option>
           <option value="1">Phase 1</option>
@@ -71,16 +72,16 @@ const ProjectForm = ({ onAddProject }) => {
           id="link"
           name="link"
           value={formData.link}
-          onChange={handleOnChange}
+          onChange={handleChange}
         />
 
         <label htmlFor="image">Screenshot</label>
-        <input 
-          type="text" 
-          id="image" 
+        <input
+          type="text"
+          id="image"
           name="image"
           value={formData.image}
-          onChange={handleOnChange}
+          onChange={handleChange}
         />
 
         <button type="submit">Add Project</button>
