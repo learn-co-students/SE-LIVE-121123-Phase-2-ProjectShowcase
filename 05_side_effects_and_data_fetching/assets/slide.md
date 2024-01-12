@@ -3,323 +3,312 @@ theme : "night"
 transition: "slide"
 highlightTheme: "monokai"
 slideNumber: false
-title: "P2L4 - React Forms slides"
+title: "P2L5 - React Side Effects & Data Fetching slides"
 ---
 
-
-## React Forms 📝 
+## Side Effects and Data Fetching 💻 
 
 ---
 
 ## ✅ Objectives 
 
-- Explain the difference between a controlled and uncontrolled input {.fragment}
-- Explain why controlled inputs are preferred by the React community {.fragment}
-- Review how to use callback functions with events in React {.fragment}
-- Review how to change parent state from a child component {.fragment}
+- Observe how to send a POST request via form
+- Explain what a side effect is
+- Observe how React manages side effects with the useEffect hook
+- Observe how to use the useEffect hook to fetch data on page load
+- Review changing parent state
 
 ---
 
-#### What is a controlled input 
+#### Project Showcase Features
+<div style="font-size: 0.8em">
 
-<small>In React, rather than looking into the DOM to get the form's input field values when the form is submitted, we use state to monitor the user's input as they type, so that our component state is always in sync with the DOM.</small>
-
-<center><img src="https://res.cloudinary.com/dnocv6uwb/image/upload/v1646072384/controlled-forms_j69gpu.svg" alt="controlled input diagram" style="height: 45vh" width="1000"></center>
+- Persist projects to database upon submitting the ProjectForm
+- Load all projects from db on component load
+- Load all phase 4 projects from db when users click on the phase 4 button
+- Load all matching projects from db by phase and value in the search input
+- Bonus: Add debouncing to search input so our search input only triggers a single fetch request when we type (rather than sending one for each keystroke)
+</div>
 
 ---
 
-### Making an input controlled 
-
+### Warmup
 <small>
 
-To keep track of each input's value, you need:
-
-1. <strong>State</strong> for the input that will manage the input's value {.fragment}
-
-2. A <strong>`value`</strong> attribute on the input that corresponds to that piece of state {.fragment}
-
-3. An <strong>`onChange`</strong> listener attached to the input to monitor users behavior and update state as the user interacts with the field {.fragment}
+Let's head over to `src/components/ProjectForm.js` and add in persistence.
 
 </small>
 
-<div style="font-size: 0.8em">
+#### Getting Started:
 
-Form components also need an `onSubmit` listener on the form element to handle the submitted form data.
+<small>
 
-</div>
+- `cd 05_side_effects_and_data_fetching/project_showcase`
+- `npm run server`
+- in another terminal: `npm install` then `npm start`
 
----
-
-### Examples
-
-- [A Form with individual pieces of state per input](https://codesandbox.io/s/controlled-form-with-individual-pieces-of-state-pbjpe4?from-embed)
-- [Refactor to formState as an object](https://codesandbox.io/s/controlled-form-with-individual-pieces-of-state-for-object-refactor-1vpvf2)
+We want to be able to submit the form to create a new project, see the project appear in the DOM, reload the page and see it still appearing on the page!
+</small>
 
 ---
 
-### 🤗 Reconciliation 🤗
+### What to know before discussing side effects? 
 
-<div style="font-size: 0.8em">
-
-- When setState is called, React will re-render that component and all of its children {.fragment}
-- This is an expensive operation, so React optimizes by running a diffing algorithm to decide which components actually need to trigger committed changes to the DOM. {.fragment}
-- This diffing process is called [reconciliation](https://reactwithhooks.netlify.app/docs/reconciliation.html) {.fragment}
-- During reconciliation, React compares its own picture of the current state of the DOM tree with what it should look like after the change. Using this diff, the minimal DOM manipulation necessary is committed to reconcile the current DOM tree with what it should be after the change to state. {.fragment}
-
-</div>
-
----
-
-#### Why we don't mutate state directly
-
-<div style="font-size: 0.75em">
-
-- One of the choices made in the reconciliation process is to only commit to updating a component in the DOM if one of its nodes or property values has changed. 
-- If all nodes (types of React elements) and their props and values are the same, React will leave that component unchanged from the previous render. {.fragment}
-- If an object or array is mutated directly and then set as the new value for state **React sees the same object in state as the previous render and leaves the DOM untouched** {.fragment}
-
-</div>
-
-<pre class="code-wrapper fragment">
-<code class="language-js hljs javascript">// so don't do this because it won't update the DOM
-state.prop = "New Value"
-setState(state);
-
-// do this instead because it will update the DOM
-// because React will see the state is set to a new object
-setState({...state, prop: "New Value"})
-</code>
-</pre>
-
----
-
-### 🛠️ ProjectForm setup 
-
-<div style="display: flex">
-<div style="width: 70%">
-<small>1. For each input element in the form, create a new state variable:</small>
+<small>The React components we've seen so far are 'pure functions'. This means that given an input(such as a props and state), the return is 100% predictable.</small>
 
 ```js
-const [name, setName] = useState("");
-const [about, setAbout] = useState("");
-const [phase, setPhase] = useState("");
-const [link, setLink] = useState("");
-const [image, setImage] = useState("");
+const Greeting = ({ name }) => {
+  return <h1> Hello, {name} </h1>;
+};
+
+export default Greeting;
 ```
 
-<small>A more elegant approach is to create a state object with key/value pairs associated with each form field:</small>
+<small>Any time Greeting is called, and provided a new prop, we will always be able to predict the output, regardless of the prop value</small>
+
+---
+
+### What is a side effect? 
+
+<small>
+<p class="fragment">"We perform a side effect when we need to reach outside of our React components to do something. Performing a side effect, however, will not give us a predictable result."<br/>
+https://www.freecodecamp.org/news/react-useeffect-absolute-beginners/</p>
+
+The term 'side effect' not only applies to React but to all functional programming. {.fragment}
+
+“A side effect is anything that affects something outside the scope of the function being executed ” - Michael W. Brady {.fragment}
+
+💡 These are operations that will still have an effect on our component, but won't happen during the rendering process (they'll happen after) {.fragment}
+
+</small>
+
+---
+
+<img src="./react-component-lifecycle.png" alt="React component lifecycle diagram" style="height: 80vh" />
+
+---
+
+### Examples of side effects
+
+- Fetching Data from a server {.fragment}
+
+- Interacting with a browser API like the `document` or `window` {.fragment}
+  - Utilizing interval timers such as `setInterval` or `setTimeout` {.fragment}
+  - adding a `mousemove` event listener to the `window` object {.fragment}
+
+---
+
+### 🛠️ useEffect() hook
+
+<div style="font-size: 0.7em">
+
+- `useEffect()` runs both upon the first render (afterwards) and then with every subsequent re-render. 
+- we can limit when the effect will run again by specifying the values for props, state, etc. on which this effect depends {.fragment}
+
+- Takes in two arguments: {.fragment}
+
+  - A callback function defining the logic to be executed as a side effect(the 'effect') {.fragment}
+
+  - A dependency array that defines when the side effect should occur. This argument is optional and does not always need to be provided {.fragment}
+
+- `useEffect()` is essentially telling React that the component needs to do something else AFTER the component has rendered {.fragment}
+
+</div>
+
+---
+
+#### 💡 In a Nutshell 💡
+
+ useEffect synchronizes a side effect with a react component's rendering.
+
+---
+
+### 1️⃣ useEffect() hook without a dependency array 
 
 ```js
-const [formData, setFormData] = useState({
-  name: "",
-  about: "",
-  phase: "",
-  link: "",
-  image: "",
+useEffect(() => {
+  // Some effect to occur
 });
 ```
+<div style="font-size: 0.8em">
+
+- In this example, only 1 argument is passed to useEffect {.fragment}
+
+- The dependency array which is the optional second argument is left out {.fragment}
+
+- This side effect will synchronize with all renders {.fragment}
 
 </div>
 
-<div style="width: 30%">
+---
 
-<small>**Note:** This approach works well for a form that has multiple string, number, textarea, & select inputs but gets a bit clunkier when the form includes inputs like checkboxes or files. [React docs](https://reactwithhooks.netlify.app/docs/forms.html) recommend an external library like [Formik](https://formik.org/) as a complete solution for forms.</small>
+### 2️⃣ useEffect() hook with an empty dependency array 
 
-<small>[React Hook Form](https://react-hook-form.com/) is another approach to handling forms in React that has become popular as well.</small>
+```js
+useEffect(() => {
+  // Some effect to occur
+}, []);
+```
+
+<div style="font-size: 0.8em">
+
+- In this example, the dependency array is passed as the second argument {.fragment}
+
+- The dependency array is empty with no provided value {.fragment}
+
+- That means that the side effect will only run one time, upon the initial render of the component and no more after that. It does not synchronize with any props or state. {.fragment}
 
 </div>
+
+
+---
+
+#### 3️⃣ useEffect() hook with a value provided to the dependency array  
+
+```js
+useEffect(() => {
+  // Some effect to occur
+}, [data]);
+```
+
+<div style="font-size: 0.65em">
+
+- In this example, the dependency array is passed a piece of data. This data can be either a prop or a state variable {.fragment}
+
+- That means that the side effect will run once upon the components initial render and then only re-run when the value of the provided data changes {.fragment}
+
+- We need to: {.fragment}
+
+  - ✅ make sure that the projects we fetch from the database align with the phase we have selected by clicking one of the phase button filters {.fragment}
+  - ✅ rework the search input so it makes calls to our api when we type in the input rather than filtering through local state in react {.fragment}
+
 </div>
 
 
+---
 
+### Cleaning up 🧹 
+
+<div style="font-size: 0.7em">
+
+
+- There will be some code that is necessary to clean up after the component is no longer being mounted on the DOM. AKA turning off our side effects
+
+- Why? To avoid 'memory leaks' which means using memory for data that is no longer necessary {.fragment}
+
+- Examples: Timeouts, subscriptions, event listeners added to the window {.fragment}
+
+- How? Return a cleanup function from the useEffect callback! {.fragment}
+
+</div>
 
 ---
 
-<small>2. Connect the `value` attribute of each input field to the corresponding state variable:</small>
-
-Example:
-
-```js
-<input
-  type="text"
-  id="name"
-  value={formData.name}
-/>
-```
-
-<small>❗**Note:** The reason `formData.name` is being used is because the state variable is an object named `formData`. To access the value of a key within the object, dot notation is used.</small>
-
----
-
-<small>3. Add an onChange listener for each input field using a helper function:</small>
-Example:
-```js
-<input 
-  type="text" 
-  id="name" 
-  value={formData.name} 
-  onChange={handleOnChange} 
-/>
-```
-
-::: {.fragment}
-
-<small>🤯 If using individual pieces of state for form fields, a separate helper function will be created for each corresponding field.</small>
-
-Example:
-
-```js
-<input type="text" id="about" onChange={handleAboutChange} />
-```
-
-```js
-<input type="text" id="phase" onChange={handlePhaseChange} />
-```
-
----
-
-<small>4. Adding a `name` attribute to the input fields:</small>
+### Cleanup example 
 
 
 ```js
-<input
-  type="text"
-  id="link"
-  onChange={handleOnChange}
-  value={formData.link}
-  name="link"
-/>
-```
+const Timer = () => {
+  const [count, setCount] = useState(0);
 
-<small>❗ **IMPORTANT:** The `name` attribute needs to match with the key created in the state object in order to update the value. If the key in the state object is 'link' then the `name` attribute for the corresponding input field should be `link` as well</small>
+  useEffect(() => {
+    let timer = setInterval(() => {
+      setCount((count) => count + 1);
+    }, 1000);
 
----
+    return () => clearInterval(timer);
+  }, []);
 
-<small>5. Updating the state when the onChange occurs (aka when the user begins typing or changing parts of the form):</small>
-
-```js
-const handleOnChange = (e) => {
-  // e.target will return an object, the element that triggered the event with properties
-  // including name and value. Object destructuring is used to extract that values from e.target
-
-  const { name, value } = e.target;
-
-  // This is the same as doing:
-  // const name = e.target.name
-  // const value = e.target.value
-
-  // The setter function is then invoked and a new object will  be created with the 
-  // contents of the previous formData spread and the new key/value added to avoid overwriting the 
-  // previous form field values
-
-  setFormData((formData) => ({ ...formData, [name]: value }));
+  return <h1>I've rendered {count} times!</h1>;
 };
 ```
 
----
-
-<small>6. On the `<form>` element, add an `onSubmit` listener with a `handleSubmit` helper function that will run when the form is submitted:</small>
-
-
-```js
-<form className="form" autoComplete="off" onSubmit={handleSubmit}>
-</form>
-```
-
-```js
-const handleSubmit = (e) => {
-  e.preventDefault();
-};
-```
+<a href="https://codesandbox.io/s/useeffect-cleanup-ig17kd?file=/src/Timer.js" target="blank" rel="noreferrer">Codesandbox Example</a>
 
 ---
 
-### 🔑 After the form has been submitted 
+### When does cleanup happen?
 
-<div style="font-size: 0.8em">
+<small>
 
-The state of `projects` is defined inside of the parent component `App` and the behavior occurs in the child component `ProjectForm`. When the new project is submitted, `projects` will need to be updated to include it.
+  - During an update, if the side effect function will run again on this re-render, then the cleanup function will run first before the effect happens again.
 
-💡 What do we need to do?
-</div>
+  - When the component unmounts (is removed from the DOM)
 
----
+</small>
 
-#### Implement the Inverse Data Flow Pattern!
 
-![Inverse Data Flow for adding projects](./react-inverse-data-flow-add-product.drawio.svg)
-
----
-
-#### Component Tree with Data Flow
-
-<center><img src="./component-hierarchy-with-updated-data-flow.drawio.svg" alt="Component Hierarchy" style="height: 85vh" width="2000"></center>
-
----
-
-<div style="font-size: 0.8em">
-Here is where the process of inverse data flow will need to occur:
-
-1. Create a helper function in `App` component called `onAddProject` that will update the `projects` state:
-
-</div>
-
-```js
-const addProject = (newProject) => {
-  setProjects(projects => [...projects, newProject]);
-};
-```
-<div style="font-size: 0.8em">
-And in the JSX:
-</div>
-
-```jsx
-<ProjectForm onAddProject={addProject} />
-```
+  <img src="./react-component-lifecycle.png" alt="React component lifecycle diagram" style="height: 55vh" />
 
 ---
 
 <div style="font-size: 0.8em">
 
-Inside the `ProjectForm` component, destructure `onAddProject` from the props and invoke it from within the `handleSubmit` function, passing it the formData object:
+  <div style="text-align: left">
+  
+  **NOTE:** In Development when using React `StrictMode` (which we are):</div>
+  - components will be doubled rendered when they first mount to help you spot errors more easily {.fragment}
+  - the component will go through a mount and update right away {.fragment}
+  - In the codesandbox demo, I removed Strict Mode so we can more easily understand what's happening with the cleanup. {.fragment}
+  - In your own development it may seem like the cleanup function is running right when the component loads. The double render from StrictMode is the reason. {.fragment}
 </div>
 
-```js
-const handleSubmit = (e) => {
-  e.preventDefault();
-  onAddProject(formData);
+---
 
-  // after we have delivered the formData to the App component 
-  // and updated state, clear the form by setting the values
-  // back to empty strings:
-  setFormData({
-    name: "",
-    about: "",
-    phase: "",
-    link: "",
-    image: "",
-  });
-};
-```
+### Debouncing
+
+<div style="font-size: 0.7em">
+
+#### The problem
+
+- Right now a separate fetch request is sent to the server for every character we type into the search input - this causes janky rendering and multiple unnecessary repaints of the ProjectList component
+
+#### The solution
+- Debounce the search input! {.fragment}
+  - use a separate piece of state to manage the search input {.fragment}
+  - when that piece of state changes, schedule a change to the state variable that will trigger the fetch request for 300 milliseconds in the future {.fragment}
+  - cancel the previously scheduled update to that state variable {.fragment}
+
+</div>
 
 ---
 
-<iframe src="https://codesandbox.io/embed/inverse-data-flow-diagram-mtvrs6?fontsize=14&hidenavigation=1&theme=dark&view=preview"
-  style="width:100%; height:650px; border:0; border-radius: 4px; overflow:hidden;"
-  title="inverse-data-flow-diagram"
-  allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-  sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-></iframe>
+<img src="./cleanup-diagram-1.drawio.svg" style="height: 75vh" />
 
 ---
 
-### 💡 Conclusion
+<img src="./cleanup-diagram-2.drawio.svg" style="height: 75vh" />
+
+---
+
+<img src="./cleanup-diagram-3.drawio.svg" style="height: 75vh" />
+
+---
+
+<img src="./cleanup-diagram-4.drawio.svg" style="height: 75vh" />
+
+---
+
+<img src="./cleanup-diagram-5.drawio.svg" style="height: 75vh" />
+
+---
+
+<img src="./cleanup-diagram-6.drawio.svg" style="height: 75vh" />
+
+---
+
+### 💡 Conclusion 
 
 <div style="font-size: 0.8em">
 
-- State is a very integral part of the way that React applications render and manipulate the DOM. {.fragment}
-- React prefers using state to update the forms and keep track of the form fields values, making them controlled inputs, rather than letting form inputs manage their own internal state (through their value). {.fragment}
-- What our user sees in the input fields reflects the value of the state associated with that field. {.fragment}
-- Example: Doing this allows us to make an edit form populated with a project's previously saved values for the inputs by setting the formState to match the saved record. {.fragment}
+- Side effects run after first render
+- Side effects run after every subsequent render where one of the values in their dependency array changes {.fragment}
+- Any time a side effect function refers to a value in state or props, that value should be included in its dependency array (follow the eslint hints in your editor) {.fragment}
+- If your side effect interacts with an external API or a native browser API like `setInterval` or `setTimeout` make sure to return a cleanup function to avoid memory leaks {.fragment}
+- useEffect with an empty dependency array is your go to tool for fetching data when a component first loads {.fragment}
 
 </div>
+
+---
+
+<img src="./component-lifecycle.drawio.svg" style="height: 75vh" />
