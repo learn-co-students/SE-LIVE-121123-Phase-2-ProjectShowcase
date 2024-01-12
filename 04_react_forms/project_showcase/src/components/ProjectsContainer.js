@@ -14,14 +14,14 @@ const ProjectsContainer = () => {
 
   const addProject = (newProject) => {
     console.log("🚀 ~ addProject ~ newProject:", newProject);
-    newProject.id = projects[projects.length - 1].id + 1; // since we're using id for the key prop when rendering each <ProjectListItem />, we can create an id for new projects to avoid a key list error
-    setProjects([...projects, newProject]); // add new project to state; use spread operator (...) to copy old array contents into new array
+    newProject.id = projects[projects.length - 1].id + 1; 
+    setProjects([...projects, newProject]); 
   };
 
   return (
     <>
       <ProjectForm
-        onAddProject={addProject} // pass callback down to form which will update state
+        onAddProject={addProject} 
       />
       <ProjectList onLoadProjects={loadProjects} projects={projects} />
     </>
