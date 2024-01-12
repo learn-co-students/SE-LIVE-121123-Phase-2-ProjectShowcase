@@ -51,7 +51,7 @@
 
    <!-- css list -->
 	
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
   
 
    
@@ -174,7 +174,7 @@ https://www.freecodecamp.org/news/react-useeffect-absolute-beginners/</p>
     
         <section >
             
-            <img src="./react-component-lifecycle.png" alt="React component lifecycle diagram" style="height: 80vh" />
+            <img src="./react-component-lifecycle.png" alt="React component lifecycle diagram" style="height: 75vh" />
             </section>
     
 
@@ -314,6 +314,18 @@ https://www.freecodecamp.org/news/react-useeffect-absolute-beginners/</p>
 <li class="fragment">
 <p>That means that the side effect will run once upon the components initial render and then only re-run when the value of the provided data changes</p>
 </li>
+</ul>
+</div>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h4>Ways to apply <code>useEffect()</code> in our ProjectShowcase</h4>
+<ul>
 <li class="fragment">
 <p>We need to:</p>
 <ul>
@@ -322,7 +334,7 @@ https://www.freecodecamp.org/news/react-useeffect-absolute-beginners/</p>
 </ul>
 </li>
 </ul>
-</div>
+
             </section>
     
 
@@ -392,7 +404,7 @@ https://www.freecodecamp.org/news/react-useeffect-absolute-beginners/</p>
 </li>
 </ul>
 </small>
-  <img src="./react-component-lifecycle.png" alt="React component lifecycle diagram" style="height: 55vh" />
+  <img src="./react-component-lifecycle.png" alt="React component lifecycle diagram" style="height: 45vh" />
             </section>
     
 
@@ -425,6 +437,9 @@ https://www.freecodecamp.org/news/react-useeffect-absolute-beginners/</p>
 <ul>
 <li>Right now a separate fetch request is sent to the server for every character we type into the search input - this causes janky rendering and multiple unnecessary repaints of the ProjectList component</li>
 </ul>
+<p></p>
+</div>
+<div style="font-size: 0.7em">
 <h4>The solution</h4>
 <ul>
 <li class="fragment">Debounce the search input!

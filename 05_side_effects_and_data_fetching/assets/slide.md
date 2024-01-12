@@ -84,7 +84,7 @@ The term 'side effect' not only applies to React but to all functional programmi
 
 ---
 
-<img src="./react-component-lifecycle.png" alt="React component lifecycle diagram" style="height: 80vh" />
+<img src="./react-component-lifecycle.png" alt="React component lifecycle diagram" style="height: 75vh" />
 
 ---
 
@@ -177,12 +177,17 @@ useEffect(() => {
 
 - That means that the side effect will run once upon the components initial render and then only re-run when the value of the provided data changes {.fragment}
 
+</div>
+
+---
+
+#### Ways to apply `useEffect()` in our ProjectShowcase
+
 - We need to: {.fragment}
 
   - ✅ make sure that the projects we fetch from the database align with the phase we have selected by clicking one of the phase button filters {.fragment}
   - ✅ rework the search input so it makes calls to our api when we type in the input rather than filtering through local state in react {.fragment}
 
-</div>
 
 
 ---
@@ -238,7 +243,7 @@ const Timer = () => {
 </small>
 
 
-  <img src="./react-component-lifecycle.png" alt="React component lifecycle diagram" style="height: 55vh" />
+  <img src="./react-component-lifecycle.png" alt="React component lifecycle diagram" style="height: 45vh" />
 
 ---
 
@@ -262,8 +267,12 @@ const Timer = () => {
 #### The problem
 
 - Right now a separate fetch request is sent to the server for every character we type into the search input - this causes janky rendering and multiple unnecessary repaints of the ProjectList component
+<p></p>
+</div>
+<div style="font-size: 0.7em">
 
 #### The solution
+
 - Debounce the search input! {.fragment}
   - use a separate piece of state to manage the search input {.fragment}
   - when that piece of state changes, schedule a change to the state variable that will trigger the fetch request for 300 milliseconds in the future {.fragment}
