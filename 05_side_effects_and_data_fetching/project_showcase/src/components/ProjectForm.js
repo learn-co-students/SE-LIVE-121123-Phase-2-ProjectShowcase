@@ -9,15 +9,15 @@ const initialState = {
 };
 
 const ProjectForm = ({ onAddProject }) => {
-  const [formData, setFormData] = useState(initialState); 
-  // const { name, about, phase, link, image} = formData 
+  const [formData, setFormData] = useState(initialState);
+  // const { name, about, phase, link, image} = formData
 
   function handleChange(e) {
-    // const {name, value} = e.target 
+    // const {name, value} = e.target
     setFormData((formData) => {
       return {
-        ...formData, 
-        [e.target.name]: e.target.value, 
+        ...formData,
+        [e.target.name]: e.target.value,
       };
     });
   }
@@ -27,15 +27,15 @@ const ProjectForm = ({ onAddProject }) => {
     const config = {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData)
-    }
-    // onAddProject(formData); 
+      body: JSON.stringify(formData),
+    };
+    // onAddProject(formData); // if we wanted to do POST on parent with optimistic rendering, we could keep this as-is
     fetch("http://localhost:4000/projects", config)
-      .then(res => res.json())
-      .then(newProject => onAddProject(newProject))
-    setFormData(initialState); 
+      .then((res) => res.json())
+      .then((newProject) => onAddProject(newProject)); // pessimistic rendering; updating state with data returned from server
+    setFormData(initialState);
   }
 
   return (
@@ -48,8 +48,8 @@ const ProjectForm = ({ onAddProject }) => {
           type="text"
           id="name"
           name="name"
-          value={formData.name} 
-          onChange={handleChange} 
+          value={formData.name}
+          onChange={handleChange}
           required
         />
 
