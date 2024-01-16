@@ -1,36 +1,40 @@
 import { useState } from "react";
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 
-const ProjectListItem = ({ project, onEditProject, onDeleteProject, onUpdateProject }) => {
+const ProjectListItem = ({
+  project,
+  onEditProject,
+  onDeleteProject,
+  onUpdateProject,
+}) => {
   const { id, image, about, name, link, phase, claps } = project;
 
-  const url = `http://localhost:4000/projects/${id}`
+  const url = `http://localhost:4000/projects/${id}`;
 
   const handleClap = () => {
-    const config = { 
+    const config = {
       method: "PATCH",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ claps: claps + 1 })
-    }
+      body: JSON.stringify({ claps: claps + 1 }),
+    };
     fetch(url, config)
-      .then(res => res.json())
-      .then(onUpdateProject)
+      .then((res) => res.json())
+      .then(onUpdateProject); // uses same callback as the ProjectEditForm to update the DOM
   };
 
   const handleEditClick = () => {
-    onEditProject(project);
+    onEditProject(project); // sets state with project selected to edit
   };
 
   const handleDeleteClick = () => {
-    if (window.confirm('Are you sure you want to delete this project?')) {
-      fetch(url, { method: 'DELETE'})
-        .then(res => {
-          if(res.ok){
-            onDeleteProject(id)
-          }
-        })
+    if (window.confirm("Are you sure you want to delete this project?")) {
+      fetch(url, { method: "DELETE" }).then((res) => {
+        if (res.ok) {
+          onDeleteProject(id);
+        }
+      });
     }
   };
 

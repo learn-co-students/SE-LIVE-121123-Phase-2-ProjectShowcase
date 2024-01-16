@@ -7,7 +7,7 @@ const ProjectList = ({
   setSelectedPhase,
   setSearchQuery,
   onDeleteProject,
-  onUpdateProject
+  onUpdateProject,
 }) => {
   const [searchInputText, setSearchInputText] = useState("");
 
@@ -26,14 +26,15 @@ const ProjectList = ({
   const handleOnChange = (e) => setSearchInputText(e.target.value);
 
   useEffect(() => {
+    // debouncing the search input
     const scheduledUpdate = setTimeout(() => {
       setSearchQuery(searchInputText);
-    }, 300)
-    
+    }, 300);
+
     return () => {
       clearTimeout(scheduledUpdate);
-    }
-  }, [setSearchQuery, searchInputText])
+    };
+  }, [setSearchQuery, searchInputText]);
 
   return (
     <section>

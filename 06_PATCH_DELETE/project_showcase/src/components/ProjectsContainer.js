@@ -57,6 +57,7 @@ function ProjectsContainer() {
   }
 
   const renderForm = () => {
+    // conditionally renders the right form component based on the value of projectToEdit in state
     if (projectToEdit) {
       return (
         <ProjectEditForm

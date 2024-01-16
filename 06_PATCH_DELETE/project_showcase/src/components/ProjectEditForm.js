@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 const ProjectEditForm = ({ projectToEdit, onUpdateProject }) => {
-  
-
   const [formData, setFormData] = useState(projectToEdit);
 
   const { name, about, phase, link, image } = formData;
@@ -23,16 +21,16 @@ const ProjectEditForm = ({ projectToEdit, onUpdateProject }) => {
   function handleSubmit(e) {
     e.preventDefault();
     const config = {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData)
-    }
+      body: JSON.stringify(formData),
+    };
     fetch(`http://localhost:4000/projects/${projectToEdit.id}`, config)
-      .then(res => res.json())
-      .then(updatedProject => onUpdateProject(updatedProject)) // pessimistic rendering
-      // .then(onUpdateProject) // shorthand for above
+      .then((res) => res.json())
+      .then((updatedProject) => onUpdateProject(updatedProject)); // pessimistic rendering
+    // .then(onUpdateProject) // shorthand for above
     // onUpdateProject(formData); // optimistic rendering
   }
 
@@ -50,7 +48,12 @@ const ProjectEditForm = ({ projectToEdit, onUpdateProject }) => {
       />
 
       <label htmlFor="about">About</label>
-      <textarea id="about" name="about" value={about} onChange={handleOnChange} />
+      <textarea
+        id="about"
+        name="about"
+        value={about}
+        onChange={handleOnChange}
+      />
 
       <label htmlFor="phase">Phase</label>
       <select name="phase" id="phase" value={phase} onChange={handleOnChange}>
