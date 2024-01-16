@@ -31,4 +31,4 @@ title: "P2L6 - PATCH & DELETE slides"
 
 ---
 
-![Updated Diagram](./component-hierarchy-with-data-flow.drawio.svg)
+![Updated Diagram](./component-hierarchy-with-updated-data-flow.drawio.svg)
