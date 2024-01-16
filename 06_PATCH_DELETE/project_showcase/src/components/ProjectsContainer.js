@@ -29,9 +29,18 @@ function ProjectsContainer() {
     setProjects(projects => [...projects, savedProject]);
   }
   
-  const onUpdateProject = () => {
+  const onUpdateProject = (updatedProject) => {
+    console.log("🚀 ~ onupdatedProject ~ updatedProject:", updatedProject)
     setProjectToEdit(null);
-    // add code to update project in state
+    // const updatedProjects = projects.map(projectObj => {
+    //   if (projectObj.id === updatedProject.id) {
+    //     return updatedProject
+    //   } else {
+    //     return projectObj
+    //   }
+    // })
+    // setProjects(updatedProjects);
+    setProjects(projects.map(project => project.id === updatedProject.id ? updatedProject : project));
   };
 
   const onEditProject = (projectToEdit) => {
@@ -40,7 +49,11 @@ function ProjectsContainer() {
 
   const onDeleteProject = (projectId) => {
     console.log(`deleting project ${projectId}`);
-    // code here to remove project from state
+    // const filteredProjects = projects.filter(project => {
+    //   return project.id !== projectId;
+    // })
+    // setProjects(filteredProjects)
+    setProjects(projects.filter(project => project.id !== projectId));
   }
 
   const renderForm = () => {
