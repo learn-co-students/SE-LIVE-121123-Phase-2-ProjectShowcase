@@ -5,10 +5,6 @@ const ProjectEditForm = ({ projectToEdit, onUpdateProject }) => {
 
   const { name, about, phase, link, image } = formData;
 
-  // const { id } = useParams()
-
-  // const history = useHistory()
-
   useEffect(() => {
     fetch(`http://localhost:4000/projects/${projectToEdit.id}`)
       .then((res) => res.json())
